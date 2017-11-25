@@ -12,18 +12,8 @@ package com.georgistephanov.android.calculator;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.TableLayout;
 
 public class MainActivity extends AppCompatActivity {
-
-	private static final String[] calculatorButtons = {
-		"C", "()", "%", "/",
-		"7", "8", "9", "X",
-		"4", "5", "6", "-",
-		"1", "2", "3", "+",
-		"+/-", "0", ".", "="};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

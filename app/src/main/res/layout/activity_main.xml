@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -16,25 +15,25 @@
 		<EditText
 			android:id="@+id/edit_number"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="20"
+			android:layout_height="0dp"
+			android:layout_weight="2"
 			android:inputType="number"
-			android:paddingHorizontal="20dp"
+			android:paddingLeft="20dp"
+			android:paddingRight="20dp"
 			android:text="123,456"
 			android:textSize="40sp"
-			android:background="transparent"
 			android:textAlignment="viewEnd"/>
 
-		<TableLayout
+		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="60"
+			android:layout_height="0dp"
+			android:layout_weight="3"
+			android:orientation="vertical"
 			android:divider="@color/materialBlue"
-			android:isScrollContainer="false"
-			android:padding="0dp"
-			android:textAlignment="center">
+			android:padding="0dp">
 
-			<TableRow>
+			<LinearLayout
+				style="@style/buttonRows">
 				<Button
 					android:id="@+id/clear"
 					android:text="C"
@@ -51,8 +50,9 @@
 					android:id="@+id/divide"
 					android:text="/"
 					style="@style/calculatorButton"/>
-			</TableRow>
-			<TableRow>
+			</LinearLayout>
+			<LinearLayout
+				style="@style/buttonRows">
 				<Button
 					android:id="@+id/seven"
 					android:text="7"
@@ -69,8 +69,9 @@
 					android:id="@+id/multiply"
 					android:text="*"
 					style="@style/calculatorButton"/>
-			</TableRow>
-			<TableRow>
+			</LinearLayout>
+			<LinearLayout
+				style="@style/buttonRows">
 				<Button
 					android:id="@+id/four"
 					android:text="4"
@@ -87,8 +88,9 @@
 					android:id="@+id/minus"
 					android:text="-"
 					style="@style/calculatorButton"/>
-			</TableRow>
-			<TableRow>
+			</LinearLayout>
+			<LinearLayout
+				style="@style/buttonRows">
 				<Button
 					android:id="@+id/one"
 					android:text="1"
@@ -105,8 +107,9 @@
 					android:id="@+id/plus"
 					android:text="+"
 					style="@style/calculatorButton"/>
-			</TableRow>
-			<TableRow>
+			</LinearLayout>
+			<LinearLayout
+				style="@style/buttonRows">
 				<Button
 					android:id="@+id/changeSign"
 					android:text="+/-"
@@ -123,9 +126,9 @@
 					android:id="@+id/equal"
 					android:text="="
 					style="@style/calculatorButton"/>
-			</TableRow>
+			</LinearLayout>
 
-		</TableLayout>
+		</LinearLayout>
 
 
 	</LinearLayout>
