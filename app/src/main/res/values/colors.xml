@@ -2,8 +2,12 @@
 <resources>
 	<color name="colorPrimary">#3F51B5</color>
 	<color name="colorPrimaryDark">#303F9F</color>
-	<color name="colorAccent">#FF4081</color>
-	<color name="backgroundColor">#F2F2F2</color>
+	<color name="colorAccent">#2196F3</color>
 	<color name="buttonsColor">#F4F4F4</color>
+	<color name="buttonTextColor">#777</color>
 	<color name="materialBlue">#2196F3</color>
+	<color name="rippleBlue">#b3d9ff</color>
+	<color name="rippleEqualSign">#0277BD</color>
+	<color name="materialOrange">#FF9800</color>
+	<color name="white">#FFF</color>
 </resources>

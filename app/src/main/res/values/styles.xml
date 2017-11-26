@@ -15,12 +15,44 @@
 		<item name="android:layout_weight">1</item>
 	</style>
 
-	<style name="calculatorButton">
+	<style name="regularCalculatorButton">
 		<item name="android:layout_width">0dp</item>
-		<item name="android:layout_height">80dp</item>
+		<item name="android:layout_height">100dp</item>
 		<item name="android:layout_weight">1</item>
-		<item name="android:textSize">35sp</item>
-		<item name="background">@color/buttonsColor</item>
+		<item name="android:textSize">30sp</item>
+		<item name="android:paddingBottom">22dp</item>
+		<item name="android:textColor">@color/buttonTextColor</item>
+		<item name="android:fontFamily">sans-serif-light</item>
+	</style>
+
+	<style name="clearButton">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">100dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:paddingBottom">22dp</item>
+		<item name="android:textSize">30sp</item>
+		<item name="android:textColor">@color/materialOrange</item>
+		<item name="android:fontFamily">sans-serif-light</item>
+	</style>
+
+	<style name="operationButton">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">100dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:paddingBottom">22dp</item>
+		<item name="android:textSize">30sp</item>
+		<item name="android:textColor">@color/colorAccent</item>
+		<item name="android:fontFamily">sans-serif-light</item>
+	</style>
+
+	<style name="equalSign">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">100dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:paddingBottom">22dp</item>
+		<item name="android:textSize">30sp</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:fontFamily">sans-serif-light</item>
 	</style>
 
 </resources>

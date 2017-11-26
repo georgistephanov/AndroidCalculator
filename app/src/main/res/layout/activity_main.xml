@@ -9,20 +9,23 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
-		android:background="@color/backgroundColor">
+		android:background="@color/white">
 
 
-		<EditText
-			android:id="@+id/edit_number"
+		<TextView
+			android:id="@+id/input_number"
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="2"
-			android:inputType="number"
+			android:background="@color/white"
 			android:paddingLeft="20dp"
 			android:paddingRight="20dp"
+			android:paddingTop="80dp"
 			android:text="123,456"
 			android:textSize="40sp"
-			android:textAlignment="viewEnd"/>
+			android:textCursorDrawable="@color/materialBlue"
+			android:fontFamily="sans-serif-light"
+			android:textAlignment="viewEnd" />
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -37,95 +40,117 @@
 				<Button
 					android:id="@+id/clear"
 					android:text="C"
-					style="@style/calculatorButton"/>
+					style="@style/clearButton"
+					android:background="@drawable/calculator_button"
+					/>
 				<Button
 					android:id="@+id/brackets"
 					android:text="()"
-					style="@style/calculatorButton"/>
+					style="@style/operationButton"
+					android:background="@drawable/calculator_button"
+					/>
 				<Button
 					android:id="@+id/percentage"
 					android:text="%"
-					style="@style/calculatorButton"/>
+					style="@style/operationButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/divide"
 					android:text="/"
-					style="@style/calculatorButton"/>
+					style="@style/operationButton"
+					android:background="@drawable/calculator_button"/>
 			</LinearLayout>
 			<LinearLayout
 				style="@style/buttonRows">
 				<Button
 					android:id="@+id/seven"
 					android:text="7"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/eight"
 					android:text="8"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/nine"
 					android:text="9"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/multiply"
-					android:text="*"
-					style="@style/calculatorButton"/>
+					android:text="X"
+					style="@style/operationButton"
+					android:background="@drawable/calculator_button"/>
 			</LinearLayout>
 			<LinearLayout
 				style="@style/buttonRows">
 				<Button
 					android:id="@+id/four"
 					android:text="4"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/five"
 					android:text="5"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/six"
 					android:text="6"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/minus"
 					android:text="-"
-					style="@style/calculatorButton"/>
+					style="@style/operationButton"
+					android:background="@drawable/calculator_button"/>
 			</LinearLayout>
 			<LinearLayout
 				style="@style/buttonRows">
 				<Button
 					android:id="@+id/one"
 					android:text="1"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/two"
 					android:text="2"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/three"
 					android:text="3"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/plus"
 					android:text="+"
-					style="@style/calculatorButton"/>
+					style="@style/operationButton"
+					android:background="@drawable/calculator_button"/>
 			</LinearLayout>
 			<LinearLayout
 				style="@style/buttonRows">
 				<Button
 					android:id="@+id/changeSign"
 					android:text="+/-"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/zero"
 					android:text="0"
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/point"
 					android:text="."
-					style="@style/calculatorButton"/>
+					style="@style/regularCalculatorButton"
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/equal"
 					android:text="="
-					style="@style/calculatorButton"/>
+					style="@style/equalSign"
+					android:background="@drawable/equal_sign_button"/>
 			</LinearLayout>
 
 		</LinearLayout>
