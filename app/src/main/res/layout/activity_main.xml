@@ -21,7 +21,6 @@
 			android:paddingLeft="20dp"
 			android:paddingRight="20dp"
 			android:paddingTop="80dp"
-			android:text="123,456"
 			android:textSize="40sp"
 			android:textCursorDrawable="@color/materialBlue"
 			android:fontFamily="sans-serif-light"
@@ -41,14 +40,12 @@
 					android:id="@+id/clear"
 					android:text="C"
 					style="@style/clearButton"
-					android:background="@drawable/calculator_button"
-					/>
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/brackets"
 					android:text="()"
 					style="@style/operationButton"
-					android:background="@drawable/calculator_button"
-					/>
+					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/percentage"
 					android:text="%"
@@ -66,7 +63,7 @@
 					android:id="@+id/seven"
 					android:text="7"
 					style="@style/regularCalculatorButton"
-					android:background="@drawable/calculator_button"/>
+					android:background="@drawable/calculator_button" />
 				<Button
 					android:id="@+id/eight"
 					android:text="8"
@@ -134,7 +131,7 @@
 				<Button
 					android:id="@+id/changeSign"
 					android:text="+/-"
-					style="@style/regularCalculatorButton"
+					style="@style/operationButton"
 					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/zero"
@@ -144,8 +141,9 @@
 				<Button
 					android:id="@+id/point"
 					android:text="."
-					style="@style/regularCalculatorButton"
-					android:background="@drawable/calculator_button"/>
+					style="@style/operationButton"
+					android:background="@drawable/calculator_button"
+					android:onClick="onPointPressed"/>
 				<Button
 					android:id="@+id/equal"
 					android:text="="

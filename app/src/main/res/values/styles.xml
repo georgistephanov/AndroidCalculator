@@ -23,6 +23,7 @@
 		<item name="android:paddingBottom">22dp</item>
 		<item name="android:textColor">@color/buttonTextColor</item>
 		<item name="android:fontFamily">sans-serif-light</item>
+		<item name="android:onClick">onOperationButtonClick</item>
 	</style>
 
 	<style name="clearButton">
@@ -33,6 +34,7 @@
 		<item name="android:textSize">30sp</item>
 		<item name="android:textColor">@color/materialOrange</item>
 		<item name="android:fontFamily">sans-serif-light</item>
+		<item name="android:onClick">onClearButtonClick</item>
 	</style>
 
 	<style name="operationButton">

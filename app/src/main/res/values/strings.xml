@@ -1,3 +1,4 @@
 <resources>
 	<string name="app_name">Simple Calculator</string>
+	<string name="max_input_size_toast_message">Maximum number of digits (12) exceeded</string>
 </resources>
