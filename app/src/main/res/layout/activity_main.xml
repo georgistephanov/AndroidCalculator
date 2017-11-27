@@ -11,20 +11,44 @@
 		android:orientation="vertical"
 		android:background="@color/white">
 
-
-		<TextView
-			android:id="@+id/input_number"
+		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="2"
-			android:background="@color/white"
+			android:orientation="horizontal"
 			android:paddingLeft="20dp"
 			android:paddingRight="20dp"
-			android:paddingTop="80dp"
-			android:textSize="40sp"
-			android:textCursorDrawable="@color/materialBlue"
-			android:fontFamily="sans-serif-light"
-			android:textAlignment="viewEnd" />
+			android:paddingTop="80dp">
+
+			<TextView
+				android:id="@+id/input_number"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				style="@style/inputTextStyle"
+				android:text="123,456"
+				android:layout_toLeftOf="@id/operation"/>
+
+			<TextView
+				android:id="@+id/operation"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				style="@style/inputTextStyle"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:textColor="@color/materialBlue"
+				android:text="-"
+				android:layout_toLeftOf="@id/second_input_number"/>
+
+			<TextView
+				android:id="@+id/second_input_number"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				style="@style/inputTextStyle"
+				android:layout_alignParentRight="true"
+				android:text="1234"/>
+
+		</RelativeLayout>
+
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -143,7 +167,7 @@
 					android:text="."
 					style="@style/operationButton"
 					android:background="@drawable/calculator_button"
-					android:onClick="onPointPressed"/>
+					android:onClick="onPointClick"/>
 				<Button
 					android:id="@+id/equal"
 					android:text="="
