@@ -3,6 +3,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	tools:context="com.georgistephanov.android.calculator.MainActivity">
 
 	<LinearLayout
@@ -48,6 +49,18 @@
 				android:layout_alignParentRight="true"
 				android:text=""/>
 
+			<android.support.v7.widget.AppCompatImageView
+				android:id="@+id/delete_button"
+				android:layout_width="50dp"
+				android:layout_height="40dp"
+				android:layout_alignParentBottom="true"
+				android:layout_alignParentEnd="true"
+				android:layout_marginBottom="10dp"
+				android:scaleType="fitXY"
+				android:tint="@color/materialBlue"
+				android:background="@color/white"
+				app:srcCompat="@drawable/ic_arrow_delete"
+				android:onClick="onDeleteButtonClick"/>
 		</RelativeLayout>
 
 
@@ -157,7 +170,8 @@
 					android:id="@+id/changeSign"
 					android:text="+/-"
 					style="@style/operationButton"
-					android:background="@drawable/calculator_button"/>
+					android:background="@drawable/calculator_button"
+					android:onClick="onChangeSignClick"/>
 				<Button
 					android:id="@+id/zero"
 					android:text="0"

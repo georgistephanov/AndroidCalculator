@@ -54,23 +54,6 @@ public class MainActivity extends Activity {
 		updateInputField(pressedButton.getText().toString());
 	}
 
-	public void onClearButtonClick(View view) {
-		if (inputNumber.length() > 0) {
-			inputNumber = new StringBuilder();
-			v_inputNumber.setText("0");
-
-			if (operation != null) {
-				operation = null;
-				v_operation.setVisibility(View.GONE);
-			}
-
-			if (secondInputNumber.length() > 0) {
-				secondInputNumber = new StringBuilder();
-				v_secondInputNumber.setText("");
-			}
-		}
-	}
-
 	public void onPointClick(View view) {
 		if (operation == null) {
 			if (!(inputNumber.toString().contains("."))) {
@@ -93,6 +76,76 @@ public class MainActivity extends Activity {
 
 			v_operation.setText("" + operation);
 			v_operation.setVisibility(View.VISIBLE);
+		}
+	}
+
+	public void onChangeSignClick(View view) {
+		if (operation == null) {
+			// The first number is being inputted
+			if ( inputNumber.length() > 0 ) {
+
+				if (inputNumber.charAt(0) != '-') {
+					// Currently positive, make it negative
+					inputNumber.insert(0, '-');
+				} else {
+					// Currently negative, make it positive
+					inputNumber.deleteCharAt(0);
+				}
+
+				v_inputNumber.setText(inputNumber.toString());
+
+			} else {
+				// No number
+			}
+		}
+		else {
+			// The second number is being inputted
+			if ( secondInputNumber.length() > 0 ) {
+				if ( secondInputNumber.charAt(0) != '-' ) {
+					// Currently positive, make it negative
+					secondInputNumber.insert(0, '-');
+				} else {
+					// Currently negative, make it positive
+					secondInputNumber.deleteCharAt(0);
+				}
+
+				v_secondInputNumber.setText(secondInputNumber.toString());
+
+			}
+		}
+	}
+
+	public void onClearButtonClick(View view) {
+		if (inputNumber.length() > 0) {
+			inputNumber = new StringBuilder();
+			v_inputNumber.setText("0");
+
+			if (operation != null) {
+				operation = null;
+				v_operation.setVisibility(View.GONE);
+			}
+
+			if (secondInputNumber.length() > 0) {
+				secondInputNumber = new StringBuilder();
+				v_secondInputNumber.setText("");
+			}
+		}
+	}
+
+
+	public void onDeleteButtonClick(View view) {
+		// Check backwards and remove the last element in the correct order
+		if (secondInputNumber.length() > 0) {
+			secondInputNumber.deleteCharAt(secondInputNumber.length() - 1);
+			v_secondInputNumber.setText(secondInputNumber.toString());
+		}
+		else if (operation != null) {
+			operation = null;
+			v_operation.setVisibility(View.GONE);
+		}
+		else if (inputNumber.length() > 0) {
+			inputNumber.deleteCharAt(inputNumber.length() - 1);
+			v_inputNumber.setText(inputNumber.toString());
 		}
 	}
 
