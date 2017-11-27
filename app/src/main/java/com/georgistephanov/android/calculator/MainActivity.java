@@ -12,17 +12,17 @@ package com.georgistephanov.android.calculator;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.Locale;
 
 public class MainActivity extends Activity {
 	private static int MAXIMUM_NUMBER_OF_DIGITS = 15;
+	private DisplayMetrics displayMetrics;
+
 	private StringBuilder inputNumber;
 	private Character operation;
 	private StringBuilder secondInputNumber;
@@ -45,13 +45,56 @@ public class MainActivity extends Activity {
 		v_operation = (TextView) findViewById(R.id.operation);
 		v_secondInputNumber = (TextView) findViewById(R.id.second_input_number);
 
-		/*formatter = (DecimalFormat) DecimalFormat.getNumberInstance(Locale.US);
-		formatter.setMaximumFractionDigits(12);*/
+		displayMetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 	}
 
 	public void onNumberClick(View view) {
 		Button pressedButton = (Button) view;
 		updateInputField(pressedButton.getText().toString());
+
+		checkFieldSizeOnInput();
+	}
+
+	private void checkFieldSizeOnInput() {
+		int totalInputFieldWidth = getInputFieldWidth();
+		float currentTextSize = getCurrentTextSize();
+
+		if ( totalInputFieldWidth > 1200 ) {
+			v_inputNumber.setTextSize(currentTextSize - 3);
+			v_secondInputNumber.setTextSize(currentTextSize - 3);
+			v_operation.setTextSize(currentTextSize - 3);
+		}
+	}
+	private void checkFieldSizeOnDelete() {
+		int totalInputFieldWidth = getInputFieldWidth();
+		float currentTextSize = getCurrentTextSize();
+
+		// TODO: This 40 should go as property and also 1200 is 12/14 of the whole resolution for other resolutions
+		if ( totalInputFieldWidth < 1150 && currentTextSize < 40 ) {
+			v_inputNumber.setTextSize(currentTextSize + 3);
+			v_secondInputNumber.setTextSize(currentTextSize + 3);
+			v_operation.setTextSize(currentTextSize + 3);
+		}
+	}
+	private int getInputFieldWidth() {
+		int totalInputFieldWidth = 0;
+
+		if ( inputNumber.length() > 0 ) {
+			totalInputFieldWidth += v_inputNumber.getWidth();
+		}
+		if ( operation != null ) {
+			totalInputFieldWidth += v_operation.getWidth();
+
+			if ( secondInputNumber.length() > 0 ) {
+				totalInputFieldWidth += v_secondInputNumber.getWidth();
+			}
+		}
+
+		return totalInputFieldWidth;
+	}
+	private float getCurrentTextSize() {
+		return v_inputNumber.getTextSize() / getResources().getDisplayMetrics().scaledDensity;
 	}
 
 	public void onPointClick(View view) {
@@ -59,12 +102,16 @@ public class MainActivity extends Activity {
 			if (!(inputNumber.toString().contains("."))) {
 				inputNumber.append(".");
 				v_inputNumber.setText(inputNumber.toString());
+
+				checkFieldSizeOnInput();
 			}
 		}
 		else {
 			if (!(secondInputNumber.toString().contains("."))) {
 				secondInputNumber.append(".");
 				v_secondInputNumber.setText(secondInputNumber.toString());
+
+				checkFieldSizeOnInput();
 			}
 		}
 	}
@@ -76,6 +123,8 @@ public class MainActivity extends Activity {
 
 			v_operation.setText("" + operation);
 			v_operation.setVisibility(View.VISIBLE);
+
+			checkFieldSizeOnInput();
 		}
 	}
 
@@ -111,6 +160,8 @@ public class MainActivity extends Activity {
 
 				v_secondInputNumber.setText(secondInputNumber.toString());
 
+			} else {
+				// No number
 			}
 		}
 	}
@@ -129,6 +180,12 @@ public class MainActivity extends Activity {
 				secondInputNumber = new StringBuilder();
 				v_secondInputNumber.setText("");
 			}
+
+			// If the text size has been shrunk -> restore it
+			// TODO: Read this from the resources
+			v_inputNumber.setTextSize(40);
+			v_secondInputNumber.setTextSize(40);
+			v_operation.setTextSize(40);
 		}
 	}
 
@@ -147,6 +204,12 @@ public class MainActivity extends Activity {
 			inputNumber.deleteCharAt(inputNumber.length() - 1);
 			v_inputNumber.setText(inputNumber.toString());
 		}
+		else {
+			// Empty input field
+			return;
+		}
+
+		checkFieldSizeOnDelete();
 	}
 
 	private void updateInputField(String toAppend) {
