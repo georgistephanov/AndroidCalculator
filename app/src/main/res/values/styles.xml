@@ -28,7 +28,7 @@
 		<item name="android:paddingBottom">22dp</item>
 		<item name="android:textColor">@color/buttonTextColor</item>
 		<item name="android:fontFamily">sans-serif-light</item>
-		<item name="android:onClick">onOperationButtonClick</item>
+		<item name="android:onClick">onNumberClick</item>
 	</style>
 
 	<style name="clearButton">
@@ -50,6 +50,7 @@
 		<item name="android:textSize">30sp</item>
 		<item name="android:textColor">@color/colorAccent</item>
 		<item name="android:fontFamily">sans-serif-light</item>
+		<item name="android:onClick">onOperationClick</item>
 	</style>
 
 	<style name="equalSign">

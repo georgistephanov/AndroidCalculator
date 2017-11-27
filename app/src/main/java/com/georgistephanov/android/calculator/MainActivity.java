@@ -24,9 +24,12 @@ import java.util.Locale;
 public class MainActivity extends Activity {
 	private static int MAXIMUM_NUMBER_OF_DIGITS = 15;
 	private StringBuilder inputNumber;
-	private TextView v_inputNumber;
 	private Character operation;
-	//private DecimalFormat formatter;
+	private StringBuilder secondInputNumber;
+
+	private TextView v_inputNumber;
+	private TextView v_operation;
+	private TextView v_secondInputNumber;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +37,20 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		inputNumber = new StringBuilder();
+		secondInputNumber = new StringBuilder();
+
 		v_inputNumber = (TextView) findViewById(R.id.input_number);
 		v_inputNumber.setText("0");
+
+		v_operation = (TextView) findViewById(R.id.operation);
+		v_secondInputNumber = (TextView) findViewById(R.id.second_input_number);
 
 		/*formatter = (DecimalFormat) DecimalFormat.getNumberInstance(Locale.US);
 		formatter.setMaximumFractionDigits(12);*/
 	}
 
-	public void onOperationButtonClick(View view) {
+	public void onNumberClick(View view) {
 		Button pressedButton = (Button) view;
-		double numberPressed = Double.parseDouble(pressedButton.getText().toString());
-
-		if ( inputNumber.length() == 0 && numberPressed == 0 ) {
-			return;
-		}
-
 		updateInputField(pressedButton.getText().toString());
 	}
 
@@ -56,13 +58,31 @@ public class MainActivity extends Activity {
 		if (inputNumber.length() > 0) {
 			inputNumber = new StringBuilder();
 			v_inputNumber.setText("0");
+
+			if (operation != null) {
+				operation = null;
+				v_operation.setVisibility(View.GONE);
+			}
+
+			if (secondInputNumber.length() > 0) {
+				secondInputNumber = new StringBuilder();
+				v_secondInputNumber.setText("");
+			}
 		}
 	}
 
 	public void onPointClick(View view) {
-		if ( !(inputNumber.toString().contains("."))) {
-			inputNumber.append(".");
-			v_inputNumber.setText(inputNumber.toString());
+		if (operation == null) {
+			if (!(inputNumber.toString().contains("."))) {
+				inputNumber.append(".");
+				v_inputNumber.setText(inputNumber.toString());
+			}
+		}
+		else {
+			if (!(secondInputNumber.toString().contains("."))) {
+				secondInputNumber.append(".");
+				v_secondInputNumber.setText(secondInputNumber.toString());
+			}
 		}
 	}
 
@@ -70,19 +90,40 @@ public class MainActivity extends Activity {
 		if (operation == null) {
 			Button operationButton = (Button) view;
 			operation = operationButton.getText().toString().charAt(0);
+
+			v_operation.setText("" + operation);
+			v_operation.setVisibility(View.VISIBLE);
 		}
 	}
 
 	private void updateInputField(String toAppend) {
-		if ( inputNumber.length() < MAXIMUM_NUMBER_OF_DIGITS ||
-				inputNumber.toString().contains(".") && inputNumber.length() < MAXIMUM_NUMBER_OF_DIGITS + 1 ) {
+		if (operation == null) {
+			if (inputNumber.length() < MAXIMUM_NUMBER_OF_DIGITS ||
+					inputNumber.toString().contains(".") && inputNumber.length() < MAXIMUM_NUMBER_OF_DIGITS + 1) {
 
-			inputNumber.append(toAppend);
-			v_inputNumber.setText(inputNumber.toString());
-
+				// Disallows entering leading zeros
+				if ( !(inputNumber.length() < 1 && toAppend.equals("0"))) {
+					inputNumber.append(toAppend);
+					v_inputNumber.setText(inputNumber.toString());
+				}
+			} else {
+				// Maximum length of the number is reached
+				Toast.makeText(this, R.string.max_input_size_toast_message, Toast.LENGTH_SHORT).show();
+			}
 		} else {
-			// Maximum length of the number is reached
-			Toast.makeText(this, R.string.max_input_size_toast_message, Toast.LENGTH_SHORT).show();
+			// Inputting the second number
+			if (secondInputNumber.length() < MAXIMUM_NUMBER_OF_DIGITS ||
+					secondInputNumber.toString().contains(".") && secondInputNumber.length() < MAXIMUM_NUMBER_OF_DIGITS + 1) {
+
+				// Disallows entering leading zeros
+				if ( !(secondInputNumber.length() < 1 && toAppend.equals("0"))) {
+					secondInputNumber.append(toAppend);
+					v_secondInputNumber.setText(secondInputNumber.toString());
+				}
+			} else {
+				// Maximum length of the number is reached
+				Toast.makeText(this, R.string.max_input_size_toast_message, Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 }

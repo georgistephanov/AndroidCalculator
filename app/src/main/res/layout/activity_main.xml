@@ -33,11 +33,12 @@
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				style="@style/inputTextStyle"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
+				android:paddingLeft="10dp"
+				android:paddingRight="10dp"
 				android:textColor="@color/materialBlue"
-				android:text="-"
-				android:layout_toLeftOf="@id/second_input_number"/>
+				android:text=""
+				android:layout_toLeftOf="@id/second_input_number"
+				android:visibility="gone"/>
 
 			<TextView
 				android:id="@+id/second_input_number"
@@ -45,7 +46,7 @@
 				android:layout_height="match_parent"
 				style="@style/inputTextStyle"
 				android:layout_alignParentRight="true"
-				android:text="1234"/>
+				android:text=""/>
 
 		</RelativeLayout>
 
@@ -100,7 +101,7 @@
 					android:background="@drawable/calculator_button"/>
 				<Button
 					android:id="@+id/multiply"
-					android:text="X"
+					android:text="x"
 					style="@style/operationButton"
 					android:background="@drawable/calculator_button"/>
 			</LinearLayout>
