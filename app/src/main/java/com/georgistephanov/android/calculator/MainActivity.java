@@ -1,11 +1,13 @@
 /**
  * I started this project as my first android app project in order to start
  * learning android development. I will aim to write a fully functional
- * calculator with the basic functionality and a pleasant UI. Hopefully,
- * I'll be able to finish this app within less than two weeks, but in the worst
- * case scenario, I would want this app finished by 13th of December.
+ * calculator with basic functionality and replicate the UI of the Samsung
+ * integrated calculator app. The deadline I have set up for myself is 13-Dec-2017.
+ * However, I'll try to finish this app within two weeks.
  *
- * Project started on: 25-Nov-2017
+ * @started 25-Nov-2017
+ * @finished
+ * @author Georgi Stefanov
  */
 
 package com.georgistephanov.android.calculator;
@@ -19,9 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+// TODO: Create a method to set and display any of the views if necessary
+
 public class MainActivity extends Activity {
-	private static int MAXIMUM_NUMBER_OF_DIGITS = 15;
-	private DisplayMetrics displayMetrics;
+	private static final float DEFAULT_INPUT_FIELD_TEXT_SIZE = 40;
+	private static final int INPUT_FIELD_TEXT_SIZE_DECREMENT = 3;
+	private static DisplayMetrics displayMetrics;
 
 	private StringBuilder inputNumber;
 	private Character operation;
@@ -39,71 +44,38 @@ public class MainActivity extends Activity {
 		inputNumber = new StringBuilder();
 		secondInputNumber = new StringBuilder();
 
-		v_inputNumber = (TextView) findViewById(R.id.input_number);
+		v_inputNumber = findViewById(R.id.input_number);
 		v_inputNumber.setText("0");
 
-		v_operation = (TextView) findViewById(R.id.operation);
-		v_secondInputNumber = (TextView) findViewById(R.id.second_input_number);
+		v_operation = findViewById(R.id.operation);
+		v_secondInputNumber = findViewById(R.id.second_input_number);
 
 		displayMetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 	}
 
+	/**
+	 * This method is invoked when any of the 10 number buttons has been pressed
+	 * @param view the button pressed
+	 */
 	public void onNumberClick(View view) {
 		Button pressedButton = (Button) view;
-		updateInputField(pressedButton.getText().toString());
+		_updateInputField(pressedButton.getText().toString());
 
-		checkFieldSizeOnInput();
+		_checkFieldSizeOnInput();
 	}
 
-	private void checkFieldSizeOnInput() {
-		int totalInputFieldWidth = getInputFieldWidth();
-		float currentTextSize = getCurrentTextSize();
-
-		if ( totalInputFieldWidth > 1200 ) {
-			v_inputNumber.setTextSize(currentTextSize - 3);
-			v_secondInputNumber.setTextSize(currentTextSize - 3);
-			v_operation.setTextSize(currentTextSize - 3);
-		}
-	}
-	private void checkFieldSizeOnDelete() {
-		int totalInputFieldWidth = getInputFieldWidth();
-		float currentTextSize = getCurrentTextSize();
-
-		// TODO: This 40 should go as property and also 1200 is 12/14 of the whole resolution for other resolutions
-		if ( totalInputFieldWidth < 1150 && currentTextSize < 40 ) {
-			v_inputNumber.setTextSize(currentTextSize + 3);
-			v_secondInputNumber.setTextSize(currentTextSize + 3);
-			v_operation.setTextSize(currentTextSize + 3);
-		}
-	}
-	private int getInputFieldWidth() {
-		int totalInputFieldWidth = 0;
-
-		if ( inputNumber.length() > 0 ) {
-			totalInputFieldWidth += v_inputNumber.getWidth();
-		}
-		if ( operation != null ) {
-			totalInputFieldWidth += v_operation.getWidth();
-
-			if ( secondInputNumber.length() > 0 ) {
-				totalInputFieldWidth += v_secondInputNumber.getWidth();
-			}
-		}
-
-		return totalInputFieldWidth;
-	}
-	private float getCurrentTextSize() {
-		return v_inputNumber.getTextSize() / getResources().getDisplayMetrics().scaledDensity;
-	}
-
+	/**
+	 * This method is invoked when the point has been pressed
+	 * @param view the point button
+	 */
 	public void onPointClick(View view) {
 		if (operation == null) {
 			if (!(inputNumber.toString().contains("."))) {
 				inputNumber.append(".");
 				v_inputNumber.setText(inputNumber.toString());
 
-				checkFieldSizeOnInput();
+				_checkFieldSizeOnInput();
 			}
 		}
 		else {
@@ -111,27 +83,44 @@ public class MainActivity extends Activity {
 				secondInputNumber.append(".");
 				v_secondInputNumber.setText(secondInputNumber.toString());
 
-				checkFieldSizeOnInput();
+				_checkFieldSizeOnInput();
 			}
 		}
 	}
 
+	/**
+	 * This method is invoked when any of the five operation buttons has been pressed
+	 * (plus, minus, multiply, divide, percentage)
+	 * @param view the operation button being pressed
+	 */
 	public void onOperationClick(View view) {
-		if (operation == null) {
+		if (operation == null || secondInputNumber.length() == 0) {
 			Button operationButton = (Button) view;
 			operation = operationButton.getText().toString().charAt(0);
 
-			v_operation.setText("" + operation);
+			v_operation.setText(operation.toString());
 			v_operation.setVisibility(View.VISIBLE);
 
-			checkFieldSizeOnInput();
+			_checkFieldSizeOnInput();
 		}
 	}
 
+	/**
+	 * This method is invoked when the change sign button (+/-) has been pressed.
+	 * It changes the sign of the number which is currently being entered.
+	 * (Toggles between positive and negative)
+	 * @param view the change sign button
+	 */
 	public void onChangeSignClick(View view) {
+		// TODO: Refactor this method
 		if (operation == null) {
 			// The first number is being inputted
 			if ( inputNumber.length() > 0 ) {
+
+				// Detect the case in which only a point has been entered so far and ignore it
+				if (inputNumber.length() == 1 && inputNumber.charAt(0) == '.') {
+					return;
+				}
 
 				if (inputNumber.charAt(0) != '-') {
 					// Currently positive, make it negative
@@ -150,6 +139,11 @@ public class MainActivity extends Activity {
 		else {
 			// The second number is being inputted
 			if ( secondInputNumber.length() > 0 ) {
+				// Detect the case in which only a point has been entered so far and ignore it
+				if (secondInputNumber.length() == 1 && secondInputNumber.charAt(0) == '.') {
+					return;
+				}
+
 				if ( secondInputNumber.charAt(0) != '-' ) {
 					// Currently positive, make it negative
 					secondInputNumber.insert(0, '-');
@@ -166,6 +160,12 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/**
+	 * This method is invoked when the Clear (C) button has been pressed.
+	 * It clears everything which has been inputted so far and leaves the user with
+	 * just-opened-like application.
+	 * @param view the clear button
+	 */
 	public void onClearButtonClick(View view) {
 		if (inputNumber.length() > 0) {
 			inputNumber = new StringBuilder();
@@ -182,14 +182,18 @@ public class MainActivity extends Activity {
 			}
 
 			// If the text size has been shrunk -> restore it
-			// TODO: Read this from the resources
-			v_inputNumber.setTextSize(40);
-			v_secondInputNumber.setTextSize(40);
-			v_operation.setTextSize(40);
+			v_inputNumber.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
+			v_secondInputNumber.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
+			v_operation.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
 		}
 	}
 
-
+	/**
+	 * This method is invoked when the blue arrow button for deletion has been pressed.
+	 * It deletes the last digit or the operation sign depending on what is the last
+	 * element of the input as of the moment. It operates on a FIFO basis (just like stack).
+	 * @param view the delete arrow button
+	 */
 	public void onDeleteButtonClick(View view) {
 		// Check backwards and remove the last element in the correct order
 		if (secondInputNumber.length() > 0) {
@@ -209,10 +213,52 @@ public class MainActivity extends Activity {
 			return;
 		}
 
-		checkFieldSizeOnDelete();
+		_checkFieldSizeOnDelete();
 	}
 
-	private void updateInputField(String toAppend) {
+
+	/* =========== Helper Methods =========== */
+
+	/**
+	 * Calculates the width of the whole input field (the initial number, the operation
+	 * sign (if present) and the second number (if present)).
+	 * @return the width of the input field
+	 */
+	private int _getInputFieldWidth() {
+		int totalInputFieldWidth = 0;
+
+		if ( inputNumber.length() > 0 ) {
+			totalInputFieldWidth += v_inputNumber.getWidth();
+		}
+		if ( operation != null ) {
+			totalInputFieldWidth += v_operation.getWidth();
+
+			if ( secondInputNumber.length() > 0 ) {
+				totalInputFieldWidth += v_secondInputNumber.getWidth();
+			}
+		}
+
+		return totalInputFieldWidth;
+
+	}
+
+	/**
+	 * Calculates the correct text size which is being used for the input field. Takes the
+	 * text size from v_inputNumber, as the three input views are supposed to be the same size.
+	 * @return the current text size in scaled pixels
+	 */
+	private float _getCurrentTextSize() {
+		return v_inputNumber.getTextSize() / getResources().getDisplayMetrics().scaledDensity;
+	}
+
+	/**
+	 * Adds a digit to the correct number, depending on which one is currently being entered.
+	 * If the number has reached its maximum number of digits, it shows a toast message.
+	 * @param toAppend string containing the number to be appended to the end of the correct number
+	 */
+	private void _updateInputField(String toAppend) {
+		int MAXIMUM_NUMBER_OF_DIGITS = 15;
+
 		if (operation == null) {
 			if (inputNumber.length() < MAXIMUM_NUMBER_OF_DIGITS ||
 					inputNumber.toString().contains(".") && inputNumber.length() < MAXIMUM_NUMBER_OF_DIGITS + 1) {
@@ -240,6 +286,38 @@ public class MainActivity extends Activity {
 				// Maximum length of the number is reached
 				Toast.makeText(this, R.string.max_input_size_toast_message, Toast.LENGTH_SHORT).show();
 			}
+		}
+	}
+
+	/**
+	 * Checks if the input field (the initial input number, the operation sign and the
+	 * second input number) has reached the end of the screen. If so, it prevents the elements
+	 * from going down by readjusting the textSize of the elements by a constant factor
+	 */
+	private void _checkFieldSizeOnInput() {
+		int totalInputFieldWidth = _getInputFieldWidth();
+		float currentTextSize = _getCurrentTextSize();
+
+		if ( totalInputFieldWidth > displayMetrics.widthPixels * 0.85 ) {
+			v_inputNumber.setTextSize(currentTextSize - INPUT_FIELD_TEXT_SIZE_DECREMENT);
+			v_secondInputNumber.setTextSize(currentTextSize - INPUT_FIELD_TEXT_SIZE_DECREMENT);
+			v_operation.setTextSize(currentTextSize - INPUT_FIELD_TEXT_SIZE_DECREMENT);
+		}
+	}
+
+	/**
+	 * Checks if the input field (the initial input number, the operation sign and the
+	 * second input number) has been resized upon deletion and if so, it restores the size
+	 * of the text by the constant factor it had been decreased by.
+	 */
+	private void _checkFieldSizeOnDelete() {
+		int totalInputFieldWidth = _getInputFieldWidth();
+		float currentTextSize = _getCurrentTextSize();
+
+		if ( totalInputFieldWidth < displayMetrics.widthPixels * 0.8 && currentTextSize < DEFAULT_INPUT_FIELD_TEXT_SIZE ) {
+			v_inputNumber.setTextSize(currentTextSize + INPUT_FIELD_TEXT_SIZE_DECREMENT);
+			v_secondInputNumber.setTextSize(currentTextSize + INPUT_FIELD_TEXT_SIZE_DECREMENT);
+			v_operation.setTextSize(currentTextSize + INPUT_FIELD_TEXT_SIZE_DECREMENT);
 		}
 	}
 }

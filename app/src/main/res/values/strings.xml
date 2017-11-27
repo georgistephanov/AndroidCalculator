@@ -1,4 +1,28 @@
 <resources>
 	<string name="app_name">Simple Calculator</string>
+
+	<string name="b_plus">+</string>
+	<string name="b_minus">-</string>
+	<string name="b_multiply">x</string>
+	<string name="b_divide">/</string>
+	<string name="b_equal">=</string>
+
+	<string name="b_clear">C</string>
+	<string name="b_brackets">()</string>
+	<string name="b_perc">%</string>
+	<string name="b_change_sign">+/-</string>
+	<string name="b_point">.</string>
+
+	<string name="b_one">1</string>
+	<string name="b_two">2</string>
+	<string name="b_three">3</string>
+	<string name="b_four">4</string>
+	<string name="b_five">5</string>
+	<string name="b_six">6</string>
+	<string name="b_seven">7</string>
+	<string name="b_eight">8</string>
+	<string name="b_nine">9</string>
+	<string name="b_zero">0</string>
+
 	<string name="max_input_size_toast_message">Maximum number of digits (15) exceeded</string>
 </resources>
