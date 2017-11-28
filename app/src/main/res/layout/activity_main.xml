@@ -13,6 +13,7 @@
 		android:background="@color/white">
 
 		<RelativeLayout
+			android:id="@+id/rl_input"
 			android:layout_width="wrap_content"
 			android:layout_height="0dp"
 			android:layout_weight="2"
@@ -33,8 +34,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_toStartOf="@id/second_input_number"
-				android:paddingLeft="10dp"
-				android:paddingRight="10dp"
+				android:paddingLeft="2dp"
+				android:paddingRight="2dp"
 				style="@style/inputTextStyle"
 				android:textColor="@color/materialBlue"
 				android:visibility="gone"/>

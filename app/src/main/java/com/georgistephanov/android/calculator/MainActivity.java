@@ -15,12 +15,12 @@ package com.georgistephanov.android.calculator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.math.BigDecimal;
 
 
 // TODO: Create a method to set and display any of the views if necessary
@@ -29,6 +29,8 @@ public class MainActivity extends Activity {
 	private static final float DEFAULT_INPUT_FIELD_TEXT_SIZE = 40;
 	private static final int INPUT_FIELD_TEXT_SIZE_DECREMENT = 3;
 	private static DisplayMetrics displayMetrics;
+
+	private RelativeLayout relativeLayoutInput;
 
 	private StringBuilder inputNumber;
 	private Character operation;
@@ -44,6 +46,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		relativeLayoutInput = findViewById(R.id.rl_input);
 
 		inputNumber = new StringBuilder();
 		secondInputNumber = new StringBuilder();
@@ -76,17 +80,33 @@ public class MainActivity extends Activity {
 	 * @param view the point button
 	 */
 	public void onPointClick(View view) {
+		if (answer.length() > 0) {
+			_clearAnswer();
+		}
+
 		if (operation == null) {
 			if (!(inputNumber.toString().contains("."))) {
-				inputNumber.append(".");
+
+				if ( inputNumber.length() == 0 ) {
+					inputNumber.append("0.");
+				} else {
+					inputNumber.append(".");
+				}
+
 				v_inputNumber.setText(inputNumber.toString());
 
 				_checkFieldSizeOnInput();
 			}
 		}
 		else {
-			if (!(secondInputNumber.toString().contains("."))) {
-				secondInputNumber.append(".");
+			if (!(secondInputNumber.toString().contains(".")) || secondInputNumber.length() == 0) {
+
+				if ( secondInputNumber.length() == 0 ) {
+					secondInputNumber.append("0.");
+				} else {
+					secondInputNumber.append(".");
+				}
+
 				v_secondInputNumber.setText(secondInputNumber.toString());
 
 				_checkFieldSizeOnInput();
@@ -138,55 +158,24 @@ public class MainActivity extends Activity {
 	public void onChangeSignClick(View view) {
 		// If the answer is visible set it as a value for the inputNumber and clear the answer
 		if (answer.length() > 0) {
-			inputNumber = answer;
+			StringBuilder tempAnswerHolder = answer;
+			_clearAnswer();
+
+			inputNumber = tempAnswerHolder;
 			v_inputNumber.setText(inputNumber.toString());
-			_cleearAnswer();
 		}
 
 		// TODO: Refactor this method
 		if (operation == null) {
 			// The first number is being inputted
 			if ( inputNumber.length() > 0 ) {
-
-				// Detect the case in which only a point has been entered so far and ignore it
-				if (inputNumber.length() == 1 && inputNumber.charAt(0) == '.') {
-					return;
-				}
-
-				if (inputNumber.charAt(0) != '-') {
-					// Currently positive, make it negative
-					inputNumber.insert(0, '-');
-				} else {
-					// Currently negative, make it positive
-					inputNumber.deleteCharAt(0);
-				}
-
-				v_inputNumber.setText(inputNumber.toString());
-
-			} else {
-				// No number
+				changeSign(inputNumber, v_inputNumber);
 			}
 		}
 		else {
 			// The second number is being inputted
 			if ( secondInputNumber.length() > 0 ) {
-				// Detect the case in which only a point has been entered so far and ignore it
-				if (secondInputNumber.length() == 1 && secondInputNumber.charAt(0) == '.') {
-					return;
-				}
-
-				if ( secondInputNumber.charAt(0) != '-' ) {
-					// Currently positive, make it negative
-					secondInputNumber.insert(0, '-');
-				} else {
-					// Currently negative, make it positive
-					secondInputNumber.deleteCharAt(0);
-				}
-
-				v_secondInputNumber.setText(secondInputNumber.toString());
-
-			} else {
-				// No number
+				changeSign(secondInputNumber, v_secondInputNumber);
 			}
 		}
 	}
@@ -198,30 +187,18 @@ public class MainActivity extends Activity {
 	 * @param view the clear button
 	 */
 	public void onClearButtonClick(View view) {
-		if (inputNumber.length() > 0) {
+		if (answer.length() > 0) {
+			_clearAnswer();
+		}
+		else if (inputNumber.length() > 0) {
 			inputNumber = new StringBuilder();
 			v_inputNumber.setText("0");
 
-			if (operation != null) {
-				operation = null;
-				v_operation.setVisibility(View.GONE);
-			}
-
-			if (secondInputNumber.length() > 0) {
-				secondInputNumber = new StringBuilder();
-				v_secondInputNumber.setText("");
-			}
+			_clearOperation();
+			_clearSecondInput();
 
 			// If the text size has been shrunk -> restore it
-			v_inputNumber.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
-			v_secondInputNumber.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
-			v_operation.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
-		}
-
-		if (answer.length() > 0) {
-			answer = new StringBuilder();
-			v_answer.setText("");
-			v_answer.setVisibility(View.GONE);
+			_restoreTextSize();
 		}
 	}
 
@@ -236,6 +213,7 @@ public class MainActivity extends Activity {
 		if (answer.length() > 0) {
 			// If delete has been pressed on an answer, clear everything
 			onClearButtonClick(view);
+			return;	// Return to avoid checking the field size upon delete
 		}
 		else if (secondInputNumber.length() > 0) {
 			secondInputNumber.deleteCharAt(secondInputNumber.length() - 1);
@@ -262,63 +240,63 @@ public class MainActivity extends Activity {
 	 * @param view the equal sign button
 	 */
 	public void onEqualSignClick(View view) {
-		if ( v_answer.getVisibility() == View.GONE ) {
-			if (inputNumber.length() > 0 && operation != null && secondInputNumber.length() > 0) {
-				double a = Double.parseDouble(inputNumber.toString());
-				double b = Double.parseDouble(secondInputNumber.toString());
+		double a;
+		double b;
 
-				switch (operation) {
-					case '+':
-						answer.append(Operations.ADD.apply(a, b));
-						_updateAnswer();
-						break;
-					case '-':
-						answer.append(Operations.SUBTRACT.apply(a, b));
-						_updateAnswer();
-						break;
-					case 'x':
-						answer.append(Operations.MULTIPLY.apply(a, b));
-						_updateAnswer();
-						break;
-					case '/':
-						answer.append(Operations.DIVIDE.apply(a, b));
-						_updateAnswer();
-						break;
-					default:
-						break;
-				}
+		if ( v_answer.getVisibility() == View.GONE ) {
+
+			if (inputNumber.length() > 0 && operation != null && secondInputNumber.length() > 0) {
+				a = Double.parseDouble(inputNumber.toString());
+				b = Double.parseDouble(secondInputNumber.toString());
+
+			} else if (inputNumber.length() > 0 && operation == null) {
+				// If just a number has been entered with no operation don't do anything
+				return;
+
 			} else {
-				Toast.makeText(this, R.string.invalid_operation_message, Toast.LENGTH_SHORT).show();
+				// Prints invalid operation message
+				_showInvalidOperationMessage();
+				return;
 			}
 		}
 		else {
 			// The answer is visible, therefore just reapply the operation
-			double a = Double.parseDouble(answer.toString());
-			double b = Double.parseDouble(secondInputNumber.toString());
+			a = Double.parseDouble(answer.toString());
+			b = Double.parseDouble(secondInputNumber.toString());
 
+			// Clear the answer as it is stored now in a
 			answer = new StringBuilder();
-
-			switch (operation) {
-				case '+':
-					answer.append(Operations.ADD.apply(a, b));
-					_updateAnswer();
-					break;
-				case '-':
-					answer.append(Operations.SUBTRACT.apply(a, b));
-					_updateAnswer();
-					break;
-				case 'x':
-					answer.append(Operations.MULTIPLY.apply(a, b));
-					_updateAnswer();
-					break;
-				case '/':
-					answer.append(Operations.DIVIDE.apply(a, b));
-					_updateAnswer();
-					break;
-				default:
-					break;
-			}
 		}
+
+
+		double calculatedAnswer;
+
+		switch (operation) {
+			case '+':
+				calculatedAnswer = Operations.ADD.apply(a, b);
+				break;
+			case '-':
+				calculatedAnswer = Operations.SUBTRACT.apply(a, b);
+				break;
+			case 'x':
+				 calculatedAnswer = Operations.MULTIPLY.apply(a, b);
+				break;
+			case '/':
+				if (b == 0) {
+					// Prevent division by zero
+					_showInvalidOperationMessage();
+					return;
+				} else {
+					 calculatedAnswer = Operations.DIVIDE.apply(a, b);
+				}
+				break;
+			default:
+				return;
+		}
+
+		answer.append(calculatedAnswer);
+		_updateAnswer();
+		_restoreInputFieldTextSize();
 	}
 
 	/* =========== Helper Methods =========== */
@@ -351,8 +329,8 @@ public class MainActivity extends Activity {
 	 * text size from v_inputNumber, as the three input views are supposed to be the same size.
 	 * @return the current text size in scaled pixels
 	 */
-	private float _getCurrentTextSize() {
-		return v_inputNumber.getTextSize() / getResources().getDisplayMetrics().scaledDensity;
+	private float _getCurrentTextSize(TextView v) {
+		return v.getTextSize() / getResources().getDisplayMetrics().scaledDensity;
 	}
 
 	/**
@@ -400,12 +378,31 @@ public class MainActivity extends Activity {
 	 */
 	private void _checkFieldSizeOnInput() {
 		int totalInputFieldWidth = _getInputFieldWidth();
-		float currentTextSize = _getCurrentTextSize();
+		float currentTextSize = _getCurrentTextSize(v_inputNumber);
 
-		if ( totalInputFieldWidth > displayMetrics.widthPixels * 0.85 ) {
+		int paddingToSubtract = (int) DEFAULT_INPUT_FIELD_TEXT_SIZE;
+		paddingToSubtract += relativeLayoutInput.getPaddingLeft() + relativeLayoutInput.getPaddingRight();
+		paddingToSubtract += v_operation.getPaddingLeft() + v_operation.getPaddingRight();
+
+		if ( totalInputFieldWidth > displayMetrics.widthPixels - paddingToSubtract ) {
 			v_inputNumber.setTextSize(currentTextSize - INPUT_FIELD_TEXT_SIZE_DECREMENT);
 			v_secondInputNumber.setTextSize(currentTextSize - INPUT_FIELD_TEXT_SIZE_DECREMENT);
 			v_operation.setTextSize(currentTextSize - INPUT_FIELD_TEXT_SIZE_DECREMENT);
+		}
+	}
+
+	/**
+	 * Restores the input field text views text size if it had been shrunk
+	 */
+	private void _restoreInputFieldTextSize() {
+		if ( _getCurrentTextSize(v_inputNumber) != DEFAULT_INPUT_FIELD_TEXT_SIZE ) {
+			v_inputNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP, DEFAULT_INPUT_FIELD_TEXT_SIZE);
+			v_operation.setTextSize(TypedValue.COMPLEX_UNIT_SP, DEFAULT_INPUT_FIELD_TEXT_SIZE);
+			v_secondInputNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP, DEFAULT_INPUT_FIELD_TEXT_SIZE);
+		}
+
+		if ( _getCurrentTextSize(v_answer) != DEFAULT_INPUT_FIELD_TEXT_SIZE ) {
+			v_answer.setTextSize(TypedValue.COMPLEX_UNIT_SP, DEFAULT_INPUT_FIELD_TEXT_SIZE);
 		}
 	}
 
@@ -416,7 +413,7 @@ public class MainActivity extends Activity {
 	 */
 	private void _checkFieldSizeOnDelete() {
 		int totalInputFieldWidth = _getInputFieldWidth();
-		float currentTextSize = _getCurrentTextSize();
+		float currentTextSize = _getCurrentTextSize(v_inputNumber);
 
 		if ( totalInputFieldWidth < displayMetrics.widthPixels * 0.8 && currentTextSize < DEFAULT_INPUT_FIELD_TEXT_SIZE ) {
 			v_inputNumber.setTextSize(currentTextSize + INPUT_FIELD_TEXT_SIZE_DECREMENT);
@@ -425,28 +422,76 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	// TODO: Format the string answer to scientific notation
-	// TODO: Reduce the textSize if it's too big
+	/**
+	 * Changes the sign of the number and updates the text view so that it
+	 * shows the change.
+	 * @param input the StringBuilder containing the number that is being manipulated
+	 * @param v_input the TextView that should be updated
+	 */
+	private void changeSign(StringBuilder input, TextView v_input) {
+		// Prevent minus 0
+		if (input.toString().equals("0.")) {
+			return;
+		}
+
+		if ( input.charAt(0) != '-' ) {
+			// Currently positive, make it negative
+			input.insert(0, '-');
+		} else {
+			// Currently negative, make it positive
+			input.deleteCharAt(0);
+		}
+
+		// Update the text of the view
+		v_input.setText(input);
+	}
+
+	/**
+	 * Updates the answer view with the current answer that had been calculated
+	 * and hides the operation and second input number so that they could be reused
+	 * if equal sign is pressed consecutively and deletes the initial input number
+	 * as it is no longer necessary.
+	 */
 	private void _updateAnswer() {
 		v_answer.setText(answer.toString());
 		v_answer.setVisibility(View.VISIBLE);
 
+		// Doesn't delete the operation because it can be reapplied
 		v_operation.setVisibility(View.GONE);
-
-		v_inputNumber.setText("");
 		v_secondInputNumber.setText("");
+
+		// Deletes the initial input number as it is no longer necessary
+		_clearInputNumber();
 	}
 
-	private void _cleearAnswer() {
+	/**
+	 * Deletes the answer if it has been displayed and deletes everything else
+	 * to return the app to just-opened-like state.
+	 */
+	private void _clearAnswer() {
 		if (answer.length() > 0) {
 			answer = new StringBuilder();
 			v_answer.setVisibility(View.GONE);
 
+			_clearInputNumber();
 			_clearOperation();
 			_clearSecondInput();
 		}
 	}
 
+	/**
+	 * Deletes the initial inputted number and updates the view to show an empty string.
+	 */
+	private void _clearInputNumber() {
+		if (inputNumber.length() > 0) {
+			inputNumber = new StringBuilder();
+			v_inputNumber.setText("");
+		}
+	}
+
+	/**
+	 * Deletes the inputted operation and updates the view to show an empty string.
+	 */
 	private void _clearOperation() {
 		if (operation != null) {
 			operation = null;
@@ -454,10 +499,31 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Deletes the second inputted number and updates the view to show an empty string.
+	 */
 	private void _clearSecondInput() {
 		if (secondInputNumber.length() > 0) {
 			secondInputNumber = new StringBuilder();
 			v_secondInputNumber.setText("");
 		}
+	}
+
+	/**
+	 * Restores the text size of the input field views if it had been shrunk
+	 */
+	private void _restoreTextSize() {
+		if (v_inputNumber.getTextSize() != DEFAULT_INPUT_FIELD_TEXT_SIZE) {
+			v_inputNumber.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
+			v_secondInputNumber.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
+			v_operation.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
+		}
+	}
+
+	/**
+	 * Shows a toast with the invalid operation message
+	 */
+	private void _showInvalidOperationMessage() {
+		Toast.makeText(this, R.string.invalid_operation_message, Toast.LENGTH_SHORT).show();
 	}
 }
