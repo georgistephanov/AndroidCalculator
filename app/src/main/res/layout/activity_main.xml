@@ -46,6 +46,15 @@
 				android:layout_alignParentEnd="true"
 				style="@style/inputTextStyle"/>
 
+			<TextView
+				android:id="@+id/answer"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentEnd="true"
+				style="@style/inputTextStyle"
+				android:textColor="@color/materialBlue"
+				android:visibility="gone"/>
+
 			<android.support.v7.widget.AppCompatImageView
 				android:id="@+id/delete_button"
 				android:layout_width="50dp"
@@ -57,7 +66,7 @@
 				android:tint="@color/materialBlue"
 				android:background="@color/white"
 				app:srcCompat="@drawable/ic_arrow_delete"
-				android:onClick="onDeleteButtonClick"/>
+				android:onClick="onDeleteButtonClick" />
 		</RelativeLayout>
 
 
@@ -184,7 +193,8 @@
 					android:id="@+id/equal"
 					android:text="@string/b_equal"
 					style="@style/equalSign"
-					android:background="@drawable/equal_sign_button"/>
+					android:background="@drawable/equal_sign_button"
+					android:onClick="onEqualSignClick"/>
 			</LinearLayout>
 
 		</LinearLayout>

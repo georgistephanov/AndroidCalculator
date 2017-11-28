@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+
 
 // TODO: Create a method to set and display any of the views if necessary
 
@@ -31,10 +33,12 @@ public class MainActivity extends Activity {
 	private StringBuilder inputNumber;
 	private Character operation;
 	private StringBuilder secondInputNumber;
+	private StringBuilder answer;
 
 	private TextView v_inputNumber;
 	private TextView v_operation;
 	private TextView v_secondInputNumber;
+	private TextView v_answer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +47,14 @@ public class MainActivity extends Activity {
 
 		inputNumber = new StringBuilder();
 		secondInputNumber = new StringBuilder();
+		answer = new StringBuilder();
 
 		v_inputNumber = findViewById(R.id.input_number);
 		v_inputNumber.setText("0");
 
 		v_operation = findViewById(R.id.operation);
 		v_secondInputNumber = findViewById(R.id.second_input_number);
+		v_answer = findViewById(R.id.answer);
 
 		displayMetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -94,10 +100,28 @@ public class MainActivity extends Activity {
 	 * @param view the operation button being pressed
 	 */
 	public void onOperationClick(View view) {
-		if (operation == null || secondInputNumber.length() == 0) {
+		if (inputNumber.length() > 0 && (operation == null || secondInputNumber.length() == 0)) {
 			Button operationButton = (Button) view;
 			operation = operationButton.getText().toString().charAt(0);
 
+			v_operation.setText(operation.toString());
+			v_operation.setVisibility(View.VISIBLE);
+
+			_checkFieldSizeOnInput();
+		}
+		else if (answer.length() > 0) {
+			// Hide the answer an set the answer value to the input number
+			v_answer.setVisibility(View.GONE);
+			inputNumber = answer;
+
+			// Clear the answer and the secondInputNumber values
+			answer = new StringBuilder();
+			secondInputNumber = new StringBuilder();
+
+			Button operationButton = (Button) view;
+			operation = operationButton.getText().toString().charAt(0);
+
+			v_inputNumber.setText(inputNumber);
 			v_operation.setText(operation.toString());
 			v_operation.setVisibility(View.VISIBLE);
 
@@ -112,6 +136,13 @@ public class MainActivity extends Activity {
 	 * @param view the change sign button
 	 */
 	public void onChangeSignClick(View view) {
+		// If the answer is visible set it as a value for the inputNumber and clear the answer
+		if (answer.length() > 0) {
+			inputNumber = answer;
+			v_inputNumber.setText(inputNumber.toString());
+			_cleearAnswer();
+		}
+
 		// TODO: Refactor this method
 		if (operation == null) {
 			// The first number is being inputted
@@ -186,6 +217,12 @@ public class MainActivity extends Activity {
 			v_secondInputNumber.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
 			v_operation.setTextSize(DEFAULT_INPUT_FIELD_TEXT_SIZE);
 		}
+
+		if (answer.length() > 0) {
+			answer = new StringBuilder();
+			v_answer.setText("");
+			v_answer.setVisibility(View.GONE);
+		}
 	}
 
 	/**
@@ -196,7 +233,11 @@ public class MainActivity extends Activity {
 	 */
 	public void onDeleteButtonClick(View view) {
 		// Check backwards and remove the last element in the correct order
-		if (secondInputNumber.length() > 0) {
+		if (answer.length() > 0) {
+			// If delete has been pressed on an answer, clear everything
+			onClearButtonClick(view);
+		}
+		else if (secondInputNumber.length() > 0) {
 			secondInputNumber.deleteCharAt(secondInputNumber.length() - 1);
 			v_secondInputNumber.setText(secondInputNumber.toString());
 		}
@@ -216,6 +257,69 @@ public class MainActivity extends Activity {
 		_checkFieldSizeOnDelete();
 	}
 
+	/**
+	 * Performes the operation which has been inputted
+	 * @param view the equal sign button
+	 */
+	public void onEqualSignClick(View view) {
+		if ( v_answer.getVisibility() == View.GONE ) {
+			if (inputNumber.length() > 0 && operation != null && secondInputNumber.length() > 0) {
+				double a = Double.parseDouble(inputNumber.toString());
+				double b = Double.parseDouble(secondInputNumber.toString());
+
+				switch (operation) {
+					case '+':
+						answer.append(Operations.ADD.apply(a, b));
+						_updateAnswer();
+						break;
+					case '-':
+						answer.append(Operations.SUBTRACT.apply(a, b));
+						_updateAnswer();
+						break;
+					case 'x':
+						answer.append(Operations.MULTIPLY.apply(a, b));
+						_updateAnswer();
+						break;
+					case '/':
+						answer.append(Operations.DIVIDE.apply(a, b));
+						_updateAnswer();
+						break;
+					default:
+						break;
+				}
+			} else {
+				Toast.makeText(this, R.string.invalid_operation_message, Toast.LENGTH_SHORT).show();
+			}
+		}
+		else {
+			// The answer is visible, therefore just reapply the operation
+			double a = Double.parseDouble(answer.toString());
+			double b = Double.parseDouble(secondInputNumber.toString());
+
+			answer = new StringBuilder();
+
+			switch (operation) {
+				case '+':
+					answer.append(Operations.ADD.apply(a, b));
+					_updateAnswer();
+					break;
+				case '-':
+					answer.append(Operations.SUBTRACT.apply(a, b));
+					_updateAnswer();
+					break;
+				case 'x':
+					answer.append(Operations.MULTIPLY.apply(a, b));
+					_updateAnswer();
+					break;
+				case '/':
+					answer.append(Operations.DIVIDE.apply(a, b));
+					_updateAnswer();
+					break;
+				default:
+					break;
+			}
+		}
+	}
 
 	/* =========== Helper Methods =========== */
 
@@ -318,6 +422,42 @@ public class MainActivity extends Activity {
 			v_inputNumber.setTextSize(currentTextSize + INPUT_FIELD_TEXT_SIZE_DECREMENT);
 			v_secondInputNumber.setTextSize(currentTextSize + INPUT_FIELD_TEXT_SIZE_DECREMENT);
 			v_operation.setTextSize(currentTextSize + INPUT_FIELD_TEXT_SIZE_DECREMENT);
+		}
+	}
+
+	// TODO: Format the string answer to scientific notation
+	// TODO: Reduce the textSize if it's too big
+	private void _updateAnswer() {
+		v_answer.setText(answer.toString());
+		v_answer.setVisibility(View.VISIBLE);
+
+		v_operation.setVisibility(View.GONE);
+
+		v_inputNumber.setText("");
+		v_secondInputNumber.setText("");
+	}
+
+	private void _cleearAnswer() {
+		if (answer.length() > 0) {
+			answer = new StringBuilder();
+			v_answer.setVisibility(View.GONE);
+
+			_clearOperation();
+			_clearSecondInput();
+		}
+	}
+
+	private void _clearOperation() {
+		if (operation != null) {
+			operation = null;
+			v_operation.setVisibility(View.GONE);
+		}
+	}
+
+	private void _clearSecondInput() {
+		if (secondInputNumber.length() > 0) {
+			secondInputNumber = new StringBuilder();
+			v_secondInputNumber.setText("");
 		}
 	}
 }

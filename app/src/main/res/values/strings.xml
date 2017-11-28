@@ -25,4 +25,5 @@
 	<string name="b_zero">0</string>
 
 	<string name="max_input_size_toast_message">Maximum number of digits (15) exceeded</string>
+	<string name="invalid_operation_message">Invalid operation</string>
 </resources>
