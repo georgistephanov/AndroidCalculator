@@ -10,7 +10,9 @@ public enum Operations implements Operation {
 	ADD			((a, b) -> a + b),
 	SUBTRACT 	((a, b) -> a - b),
 	MULTIPLY	((a, b) -> a * b),
-	DIVIDE		((a, b) -> a / b);
+	DIVIDE		((a, b) -> a / b),
+	PERCENTAGE  ((a, b) -> (a * b) / 100),
+	POWER		((a, b) -> Math.pow(a, b));
 
 	private Operation operation;
 

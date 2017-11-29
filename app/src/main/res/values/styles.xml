@@ -24,8 +24,9 @@
 		<item name="android:layout_width">0dp</item>
 		<item name="android:layout_height">100dp</item>
 		<item name="android:layout_weight">1</item>
-		<item name="android:textSize">30sp</item>
 		<item name="android:paddingBottom">22dp</item>
+		<item name="android:background">@drawable/calculator_button</item>
+		<item name="android:textSize">30sp</item>
 		<item name="android:textColor">@color/buttonTextColor</item>
 		<item name="android:fontFamily">sans-serif-light</item>
 		<item name="android:onClick">onNumberClick</item>
@@ -36,6 +37,7 @@
 		<item name="android:layout_height">100dp</item>
 		<item name="android:layout_weight">1</item>
 		<item name="android:paddingBottom">22dp</item>
+		<item name="android:background">@drawable/calculator_button</item>
 		<item name="android:textSize">30sp</item>
 		<item name="android:textColor">@color/materialOrange</item>
 		<item name="android:fontFamily">sans-serif-light</item>
@@ -47,6 +49,7 @@
 		<item name="android:layout_height">100dp</item>
 		<item name="android:layout_weight">1</item>
 		<item name="android:paddingBottom">22dp</item>
+		<item name="android:background">@drawable/calculator_button</item>
 		<item name="android:textSize">30sp</item>
 		<item name="android:textColor">@color/colorAccent</item>
 		<item name="android:fontFamily">sans-serif-light</item>
@@ -58,6 +61,53 @@
 		<item name="android:layout_height">100dp</item>
 		<item name="android:layout_weight">1</item>
 		<item name="android:paddingBottom">22dp</item>
+		<item name="android:background">@drawable/equal_sign_button</item>
+		<item name="android:textSize">30sp</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:fontFamily">sans-serif-light</item>
+	</style>
+
+
+							<!--Land orientation styles-->
+
+	<style name="regularCalculatorButtonLand">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">50dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:background">@drawable/calculator_button</item>
+		<item name="android:textSize">30sp</item>
+		<item name="android:textColor">@color/buttonTextColor</item>
+		<item name="android:fontFamily">sans-serif-light</item>
+		<item name="android:onClick">onNumberClick</item>
+	</style>
+
+	<style name="clearButtonLand">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">50dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:background">@drawable/calculator_button</item>
+		<item name="android:textSize">30sp</item>
+		<item name="android:textColor">@color/materialOrange</item>
+		<item name="android:fontFamily">sans-serif-light</item>
+		<item name="android:onClick">onClearButtonClick</item>
+	</style>
+
+	<style name="operationButtonLand">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">50dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:background">@drawable/calculator_button</item>
+		<item name="android:textSize">30sp</item>
+		<item name="android:textColor">@color/colorAccent</item>
+		<item name="android:fontFamily">sans-serif-light</item>
+		<item name="android:onClick">onOperationClick</item>
+	</style>
+
+	<style name="equalSignLand">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">50dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:background">@drawable/equal_sign_button</item>
 		<item name="android:textSize">30sp</item>
 		<item name="android:textColor">@color/white</item>
 		<item name="android:fontFamily">sans-serif-light</item>

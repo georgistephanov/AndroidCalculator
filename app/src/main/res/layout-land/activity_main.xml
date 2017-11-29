@@ -84,97 +84,97 @@
 				<Button
 					android:id="@+id/clear"
 					android:text="@string/b_clear"
-					style="@style/clearButton"/>
+					style="@style/clearButtonLand"/>
 				<Button
 					android:id="@+id/power"
 					android:text="@string/b_power"
-					style="@style/operationButton"/>
+					style="@style/operationButtonLand"/>
 				<Button
 					android:id="@+id/percentage"
 					android:text="@string/b_perc"
-					style="@style/operationButton"/>
+					style="@style/operationButtonLand"/>
 				<Button
 					android:id="@+id/divide"
 					android:text="@string/b_divide"
-					style="@style/operationButton"/>
+					style="@style/operationButtonLand"/>
 			</LinearLayout>
 			<LinearLayout
 				style="@style/buttonRows">
 				<Button
 					android:id="@+id/seven"
 					android:text="@string/b_seven"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand" />
 				<Button
 					android:id="@+id/eight"
 					android:text="@string/b_eight"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand"/>
 				<Button
 					android:id="@+id/nine"
 					android:text="@string/b_nine"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand"/>
 				<Button
 					android:id="@+id/multiply"
 					android:text="@string/b_multiply"
-					style="@style/operationButton"/>
+					style="@style/operationButtonLand"/>
 			</LinearLayout>
 			<LinearLayout
 				style="@style/buttonRows">
 				<Button
 					android:id="@+id/four"
 					android:text="@string/b_four"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand"/>
 				<Button
 					android:id="@+id/five"
 					android:text="@string/b_five"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand"/>
 				<Button
 					android:id="@+id/six"
 					android:text="@string/b_six"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand"/>
 				<Button
 					android:id="@+id/minus"
 					android:text="@string/b_minus"
-					style="@style/operationButton"/>
+					style="@style/operationButtonLand"/>
 			</LinearLayout>
 			<LinearLayout
 				style="@style/buttonRows">
 				<Button
 					android:id="@+id/one"
 					android:text="@string/b_one"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand"/>
 				<Button
 					android:id="@+id/two"
 					android:text="@string/b_two"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand"/>
 				<Button
 					android:id="@+id/three"
 					android:text="@string/b_three"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand"/>
 				<Button
 					android:id="@+id/plus"
 					android:text="@string/b_plus"
-					style="@style/operationButton"/>
+					style="@style/operationButtonLand"/>
 			</LinearLayout>
 			<LinearLayout
 				style="@style/buttonRows">
 				<Button
 					android:id="@+id/changeSign"
 					android:text="@string/b_change_sign"
-					style="@style/operationButton"
+					style="@style/operationButtonLand"
 					android:onClick="onChangeSignClick"/>
 				<Button
 					android:id="@+id/zero"
 					android:text="@string/b_zero"
-					style="@style/regularCalculatorButton"/>
+					style="@style/regularCalculatorButtonLand"/>
 				<Button
 					android:id="@+id/point"
 					android:text="@string/b_point"
-					style="@style/operationButton"
+					style="@style/operationButtonLand"
 					android:onClick="onPointClick"/>
 				<Button
 					android:id="@+id/equal"
 					android:text="@string/b_equal"
-					style="@style/equalSign"
+					style="@style/equalSignLand"
 					android:onClick="onEqualSignClick"/>
 			</LinearLayout>
 

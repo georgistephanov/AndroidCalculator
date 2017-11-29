@@ -8,7 +8,7 @@
 	<string name="b_equal">=</string>
 
 	<string name="b_clear">C</string>
-	<string name="b_brackets">()</string>
+	<string name="b_power">^</string>
 	<string name="b_perc">%</string>
 	<string name="b_change_sign">+/-</string>
 	<string name="b_point">.</string>
