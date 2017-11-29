@@ -4,5 +4,5 @@ calculator with basic functionality and replicate the UI of the Samsung
 integrated calculator app. The deadline I have set up for myself is 13-Dec-2017.
 However, I'll try to finish this app within two weeks.
 
-@started  25-Nov-2017
+@started  25-Nov-2017\n
 @finished 29-Nov-2017
