@@ -6,3 +6,7 @@ However, I'll try to finish this app within two weeks.
 
 @started  25-Nov-2017 <br>
 @finished 29-Nov-2017
+
+<h2>Preview</h2>
+
+![](https://media.giphy.com/media/3oxHQtpQ5TZyVZfPoI/giphy.gif)
